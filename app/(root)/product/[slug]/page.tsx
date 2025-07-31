@@ -20,7 +20,7 @@ const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) =>
         <div className="grid grid-cols-1 md:grid-cols-5">
             {/* Image Column */}
             <div className="col-span-2">
-                <ProductImages images={product?.images} />
+                <ProductImages images={product?.images ?? []} />
             </div>
             {/* Details Column */}
             <div className="col-span-2 p-5">
@@ -63,7 +63,7 @@ const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) =>
                         </div>
                         <div className="mb-2 flex justify-between">
                             <div>Status</div>
-                            {product?.stock > 0 ? (
+                            {(product?.stock ?? 0) > 0 ? (
                                 <Badge variant='outline'>
                                     In Stock
                                 </Badge>
@@ -74,7 +74,7 @@ const ProductPage = async ({ params }: { params: Promise<{ slug: string }> }) =>
                             )}
                            
                         </div>
-                        {product?.stock > 0 && (
+                        {(product?.stock ?? 0) > 0 && (
                             <div className="flex-center">
                                 <Button className="w-full">
                                     Add to Cart

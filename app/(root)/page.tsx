@@ -6,10 +6,16 @@ const HomePage = async () => {
   // Fetch latest products
   const latestProducts = await getLatestProducts();
 
+  // Convert rating from string to number
+  const productsWithNumericRating = latestProducts.map(product => ({
+    ...product,
+    rating: Number(product.rating),
+  }));
+
   return (
     <>
       <ProductList 
-        data={latestProducts} 
+        data={productsWithNumericRating} 
         title="Newest Arrivals"
         limit={6}
       />
