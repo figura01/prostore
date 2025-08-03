@@ -1,19 +1,20 @@
-export interface IProduct {
-  name: string;
-  slug: string;
-  category: string;
-  description: string;
-  images: string[];
-  price: number;
-  brand: string;
-  rating: number;
-  numReviews: number;
-  stock: number;
-  isFeatured: boolean;
-  banner: string | null;
-}
+import { hashSync } from "bcrypt-ts-edge";
 
 const sampleData = {
+  users: [
+    {
+      name: "John",
+      email: "admin@exemple.com",
+      role: "admin",
+      password: hashSync("admin1234", 10),
+    },
+    {
+      name: "Math",
+      email: "user@exemple.com",
+      role: "user",
+      password: hashSync("user1234", 10),
+    },
+  ],
   products: [
     {
       name: "Polo Sporting Stretch Shirt",
