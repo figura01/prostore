@@ -7,7 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 
 // Con vert prisma object to regular object
 export function convertToPlainObject<T>(value: T): T {
-  console.log("value: ", value);
   return JSON.parse(JSON.stringify(value));
 }
 
