@@ -8,7 +8,6 @@ neonConfig.webSocketConstructor = ws;
 const connectionString = `${process.env.DATABASE_URL}`;
 
 // Creates a new connection pool using the provided connection string, allowing multiple concurrent connections.
-console.log("connectionString: ", connectionString);
 const pool = new Pool({ connectionString });
 
 // Instantiates the Prisma adapter using the Neon connection pool to handle the connection between Prisma and Neon.
