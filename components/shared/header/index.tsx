@@ -1,9 +1,7 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { APP_NAME } from "@/lib/constants";
 import Menu from "@/components/shared/header/menu";
-
 
 const Header = () => {
   return (
