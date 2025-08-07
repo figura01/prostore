@@ -66,7 +66,11 @@ export async function addItemToCart(data: CartItem) {
       console.log(newCart);
 
       await prisma.cart.create({
-        data: newCart,
+        data: {
+          ...newCart,
+          sessionCartId: newCart.sessionCardId,
+          shippingPrice: newCart.shuppingPrice, // Ensure correct spelling and field
+        },
       });
 
       // Revalidate product page
