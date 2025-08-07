@@ -12,7 +12,7 @@ const AddToCart = ({ item }: {item: CartItem}) => {
     const handleAddToCart = async () => {
         const res = await addItemToCart(item);
 
-        if(!res.success) {
+        if(!res?.success) {
             toast.error('Fail to add this item to the cart', {
                 icon: <CircleAlert className="h-5 w-5 text-red-500"/>,
                 description: 'test',
