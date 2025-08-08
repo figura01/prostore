@@ -20,8 +20,8 @@ const AddToCart = ({ item }: {item: CartItem}) => {
 
             })
         }
-        toast.success('Item added to the cart', {
-            description: 'test',
+        toast.success(res.message, {
+            
             icon: <CheckCircle className="h-5 w-5 text-green-500" />,
             className: "bg-green-50 border-green-200 text-green-900",
             action: (
