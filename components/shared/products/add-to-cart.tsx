@@ -1,50 +1,87 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Plus, CheckCircle, CircleAlert } from "lucide-react";
-import { toast } from "sonner";
-import { CartItem } from "@/types";
-import { addItemToCart } from "@/lib/actions/cart.actions";
+'use client';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { Plus, Minus, Loader } from 'lucide-react';
+import { Cart, CartItem } from '@/types';
+import { toast } from 'sonner';
+import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
+import { useTransition } from 'react';
 
-const AddToCart = ({ item }: {item: CartItem}) => {
-    const router = useRouter();
+const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
+  const router = useRouter();
 
-    const handleAddToCart = async () => {
-        const res = await addItemToCart(item);
+  const [isPending, startTransition] = useTransition();
 
-        if(!res?.success) {
-            toast.error('Fail to add this item to the cart', {
-                icon: <CircleAlert className="h-5 w-5 text-red-500"/>,
-                description: 'test',
-                className: "bg-red-50 border-red-200 text-red-900",
+  const handleAddToCart = async () => {
+    startTransition(async () => {
+      const res = await addItemToCart(item);
+      console.log('addItemToCart res: ', res)
 
-            })
-        }
-        toast.success(res.message, {
-            
-            icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-            className: "bg-green-50 border-green-200 text-green-900",
-            action: (
-                <Button
-                    onClick={() => router.push("/cart")}
-                    className="flex flex-end bg-primary text-white hover:bg-gray-800"
-                >
-                    Go to Cart
-                </Button>
-            )
+      if (!res || !res.success) {
+        toast.error(res?.message , {
+    
+        });
+        return;
+      }
 
-        })
-    }
+      // Handle success add to cart
+      toast.success(res.message, {
+       
+        action: (
+          <Button
+            className='bg-primary text-white hover:bg-gray-800'
+            onClick={() => router.push('/cart')}
+          >
+            Go To Cart
+          </Button>
+        ),
+      });
+    });
+  };
 
-    return (
-        <Button 
-            className="w-full" 
-            type="button"
-            onClick={handleAddToCart}
-        >
-           <Plus /> Add to Cart
-        </Button>
-    );
-}
- 
+  //Handle remove from cart
+  const handleRemoveFromCart = async () => {
+    startTransition(async () => {
+      const res = await removeItemFromCart(item.productId);
+
+      toast.success(res.message, {});
+
+      return;
+    });
+  };
+
+  // Check if item is in cart
+  const existItem =
+    cart && cart.items.find((x) => x.productId === item.productId);
+
+  return existItem ? (
+    <div>
+      <Button type='button' variant='outline' onClick={handleRemoveFromCart}>
+        {isPending ? (
+          <Loader className='w-4 h-4 animate-spin' />
+        ) : (
+          <Minus className='w-4 h-4' />
+        )}
+      </Button>
+      <span className='px-2'>{existItem.qty}</span>
+      <Button type='button' variant='outline' onClick={handleAddToCart}>
+        {isPending ? (
+          <Loader className='w-4 h-4 animate-spin' />
+        ) : (
+          <Plus className='w-4 h-4' />
+        )}
+      </Button>
+    </div>
+  ) : (
+    <Button className='w-full' type='button' onClick={handleAddToCart}>
+      {isPending ? (
+        <Loader className='w-4 h-4 animate-spin' />
+      ) : (
+        <Plus className='w-4 h-4' />
+      )}{' '}
+      Add To Cart
+    </Button>
+  );
+};
+
 export default AddToCart;
