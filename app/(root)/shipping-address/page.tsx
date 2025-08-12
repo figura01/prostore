@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { ShippingAddress } from "@/types";
 import ShippingAddressForm from './shipping-address-form';
 
-export const metatdat: Metadata = {
+export const metadata: Metadata = {
     title: 'Shipping Address'
 }
 
