@@ -17,9 +17,9 @@ const PaymentMethodPage = async () => {
     const user = await getUserById(userId);
     return (<>
         <CkeckoutSteps current={2}/>
-       <PaymentMethodForm
-            preferredPaymentMethod={user.paymentMethod}
-       />
+        <PaymentMethodForm
+                preferredPaymentMethod={user.paymentMethod}
+        />
     </>);
 }
  

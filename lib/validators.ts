@@ -2,6 +2,8 @@ import { z } from "zod";
 import { formatNumberWithDecimal } from "@/lib/utils";
 import { PAYMENT_METHODS } from "./constants";
 
+console.log("PAYMENT_METHODS: ", PAYMENT_METHODS);
+
 const currency = z
   .string()
   .refine(
@@ -96,7 +98,7 @@ export const insertOrderSchema = z.object({
   taxPrice: currency,
   totalPrice: currency,
   paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
-    message: "Invvalid payment",
+    message: "Invalid payment",
   }),
   shippingAddress: shippingAddressSchema,
 });

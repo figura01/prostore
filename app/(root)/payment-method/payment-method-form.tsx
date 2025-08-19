@@ -16,7 +16,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { updateUserPaymentMethod } from "@/lib/actions/user.actions";
 
 
-const PaymentMethodForm = ({ preferredPaymentMethod }: { 
+const PaymentMethodForm = ({ 
+    preferredPaymentMethod 
+}: { 
     preferredPaymentMethod: string | null
 }) => {
     const router = useRouter();
@@ -24,7 +26,7 @@ const PaymentMethodForm = ({ preferredPaymentMethod }: {
     const form = useForm<z.infer<typeof paymentMethodSchema>>({
         resolver: zodResolver(paymentMethodSchema),
         defaultValues: {
-            type: preferredPaymentMethod || DEFAULT_PAYMENT_METHOD
+            type: preferredPaymentMethod || DEFAULT_PAYMENT_METHOD
         }
     })
 
@@ -32,7 +34,9 @@ const PaymentMethodForm = ({ preferredPaymentMethod }: {
 
     const onSubmit:SubmitHandler<z.infer<typeof paymentMethodSchema>> = async (values) => {
         startTransition( async () => {
+            console.log('values in form: ', values)
             const res = await updateUserPaymentMethod(values)
+            console.log('res in form: ', res)
 
             if(!res.success) {
                 toast.error("Error can't update user payment method", {
@@ -59,37 +63,40 @@ const PaymentMethodForm = ({ preferredPaymentMethod }: {
                     method="post" className="space-y-4"
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
-                    <div className="flex flex-col md:flex-row gap-5">
-                        <FormField
-                            control={form.control}
-                            name="type"
-                            render={({ field }) => (
-                                <FormItem className="space-y-3">
-                                    <FormControl>
-                                        <RadioGroup
-                                            onValueChange={field.onChange}
-                                            className='flex flex-col space-y-2'
-                                        >
-                                            {PAYMENT_METHODS.map((paymentMethod) => (
-                                                <FormItem 
-                                                    key={paymentMethod}
-                                                    className="flex items-center space-x-3 space-y-0"
-                                                >
-                                                    <FormControl>
-                                                        <RadioGroupItem value={paymentMethod} checked={field.value === paymentMethod}/>
-                                                    </FormControl>
-                                                    <FormLabel className="font-normal">
-                                                        {paymentMethod}
-                                                    </FormLabel>
-                                                </FormItem>
-                                            ))}
-                                        </RadioGroup>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                    <div className='flex flex-col md:flex-row gap-5'>
+              <FormField
+                control={form.control}
+                name='type'
+                render={({ field }) => (
+                  <FormItem className='space-y-3'>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        className='flex flex-col space-y-2'
+                      >
+                         {PAYMENT_METHODS.map((paymentMethod) => (
+                          <FormItem
+                            key={paymentMethod}
+                            className='flex items-center space-x-3 space-y-0'
+                          >
+                            <FormControl>
+                              <RadioGroupItem
+                                value={paymentMethod}
+                                checked={field.value === paymentMethod}
+                              />
+                            </FormControl>
+                            <FormLabel className='font-normal'>
+                              {paymentMethod}
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
                     <div className="flex gap-2">
                         <Button type="submit" disabled={isPending}>

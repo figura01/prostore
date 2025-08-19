@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
-
+import PlaceOrderForm from "@/app/(root)/place-order/place-order-form";
 
 const metadata:Metadata = {
     title: 'Place Order'
@@ -34,8 +34,8 @@ const PlaceOrderPage = async () => {
 
     return (<>
         <CkeckoutSteps current={3} />
-        <h1 className="py-4 text-2xl">Pace Order</h1>
-        <div className="grid mg:grid-cols md:gap-5">
+        <h1 className="py-4 text-2xl">Place Order</h1>
+        <div className="grid md:grid-cols-3 md:gap-5">
             <div className="md:col-span-2 overflow-x-auto space-y-4">
                 <Card>
                     <CardContent className="p-4 gap-4">
@@ -126,6 +126,7 @@ const PlaceOrderPage = async () => {
                             <div>Total</div>
                             <div>{ formatCurrency(cart.totalPrice) }</div>
                         </div>
+                        <PlaceOrderForm />
                     </CardContent>
                 </Card>
             </div>
