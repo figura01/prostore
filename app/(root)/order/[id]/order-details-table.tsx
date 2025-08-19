@@ -29,7 +29,7 @@ const OrderDetailsTable = ({ order }: {order: Order} ) => {
             <h1 className="text-2xl py-4">
                 Order {formatId(id)}
             </h1>
-            <div className="grid md:gitd-cols-3 md:gap-5">
+            <div className="grid md:grid-cols-3 md:gap-5">
                 <div className="col-span-2 space-4-y overflow-x-auto">
                     <Card>
                         <CardContent className="p-4 gap-4">
