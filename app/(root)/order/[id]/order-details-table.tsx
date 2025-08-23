@@ -1,14 +1,17 @@
+"use client";
 import { Order } from "@/types";
 import { formatDateTime, formatId } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-
+import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { createPayPalOrder, approvePayPalOrder } from "@/lib/actions/order.actions";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { formatCurrency } from "@/lib/utils";
-const OrderDetailsTable = ({ order }: {order: Order} ) => {
+const OrderDetailsTable = ({ order, paypalClientId }: {order: Order, paypalClientId: string} ) => {
     const {
         id,
         shippingAddress,
@@ -23,6 +26,46 @@ const OrderDetailsTable = ({ order }: {order: Order} ) => {
         isDelivered,
         deliveredAt
     } = order;
+
+
+    
+  const PrintLoadingState = () => {
+    const [{ isPending, isRejected }] = usePayPalScriptReducer();
+    let status = '';
+
+    if (isPending) {
+      status = 'Loading PayPal...';
+    } else if (isRejected) {
+      status = 'Error Loading PayPal';
+    }
+    return status;
+  };
+
+  const handleCreatePayPalOrder = async () => {
+    const res = await createPayPalOrder(order.id);
+
+    if (!res.success) {
+      toast.error("Error creating PayPal order", {
+        description: res.message,
+      });
+      return;   
+    }
+
+    return res.data;
+  };
+
+  const handleApprovePayPalOrder = async (data: { orderID: string }) => {
+    const res = await approvePayPalOrder(order.id, data);
+    if (!res.success) {
+      toast.error("Error approving PayPal order", {
+        description: res.message,
+      });
+      return;
+    }
+    toast.success('Order successfully paid', {
+      description: res.message,
+    });
+  };
 
     return (
         <>
@@ -61,7 +104,7 @@ const OrderDetailsTable = ({ order }: {order: Order} ) => {
                                 </Badge>
                             ): (
                                 <Badge variant="destructive">
-                                    Not paid
+                                    Not delivered
                                 </Badge>
                             )}
                         </CardContent>
@@ -124,6 +167,21 @@ const OrderDetailsTable = ({ order }: {order: Order} ) => {
                             <div>Total</div>
                             <div>{ formatCurrency(totalPrice) }</div>
                         </div>
+                        {/* Paypal Payment */}
+                        { !isPaid && paymentMethod === "PayPal" && (
+                            <div>
+                                <PayPalScriptProvider options={{
+                                    "clientId": paypalClientId,
+                                }}>
+                                    <PrintLoadingState />
+
+                                    <PayPalButtons
+                                        createOrder={ handleCreatePayPalOrder }
+                                        onApprove={ handleApprovePayPalOrder}
+                                    />
+                                </PayPalScriptProvider>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
