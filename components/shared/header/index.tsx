@@ -6,8 +6,8 @@ import Menu from "@/components/shared/header/menu";
 const Header = () => {
   return (
     <header className="w-full border-b">
-         {/* <div className="flex flex-row justify-between items-center">*/}
-      <div className="wrapper flex-between">
+        {/* <div className="flex flex-row justify-between items-center">*/}
+        <div className="wrapper flex-between">
             <div className="flex-start">
                 <Link href='/' className="flex-start ml-4">
                     <Image 
