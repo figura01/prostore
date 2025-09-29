@@ -6,6 +6,8 @@ import { Metadata } from "next";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
+import Charts from "./charts";
+import { requireAdmin } from "@/lib/auth-guard"
 
 export const metadata:Metadata = {
     title: 'Admin Dashboard'
@@ -13,6 +15,8 @@ export const metadata:Metadata = {
 
 
 const AdminOverviewPage = async () => {
+    await requireAdmin();
+    
     const session = await auth()  
 
     if(session?.user?.role !== 'admin') {
@@ -89,7 +93,9 @@ const AdminOverviewPage = async () => {
                         <CardTitle>Overview</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {/* CHART HERE. */}
+                        <Charts data={{
+                            salesData: summary.salesData
+                        }}/>
                     </CardContent>
                 </Card>
                 <Card

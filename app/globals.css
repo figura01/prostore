@@ -148,3 +148,12 @@
 @utility h3-bold {
   @apply font-bold text-xl lg:text-2xl;
 }
+
+
+html.dark .upload-field .text-white {
+  color: #ffffff !important;
+}
+
+.upload-field .text-white {
+  color: #000 !important;
+}

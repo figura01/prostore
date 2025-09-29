@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { formatNumberWithDecimal } from "@/lib/utils";
 import { PAYMENT_METHODS } from "./constants";
+import { updateProfile } from "./actions/user.actions";
 
 console.log("PAYMENT_METHODS: ", PAYMENT_METHODS);
 
@@ -23,6 +24,11 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+});
+
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, "Product ID is required"),
 });
 
 // Shema for signing user in
@@ -123,4 +129,10 @@ export const paymentResultSchema = z.object({
 export const updateProfileSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().min(3, "Email must be at least 3 characters"),
+});
+
+// Schema to update Users
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, "User ID is required"),
+  role: z.string().min(1, "Role is required"),
 });

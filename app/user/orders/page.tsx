@@ -1,9 +1,10 @@
 import { Metadata } from "next";
-import { getMyOrders } from "@/lib/actions/order.actions";
+import { deleteOrder, getMyOrders } from "@/lib/actions/order.actions";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Pagination from "@/components/shared/pagination";
+import DeleteDialog from "@/components/shared/delete-dialog";
 
 export const metadata:Metadata = {
     title: 'My Orders'
@@ -45,6 +46,10 @@ const OrdersPage = async (props: {
                                     <Link href={`/order/${order.id}`}>
                                        <span className="px-2">Details</span>
                                     </Link>
+                                    <DeleteDialog 
+                                        id={order.id}
+                                        action={deleteOrder}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}
