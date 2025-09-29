@@ -1,6 +1,4 @@
 {
-  "rootDir": ["./"],
-  "ignorePatterns": ["node_modules/", "build/", "public/", "out/", ".next/"],
   "extends": [
     "next/core-web-vitals", 
     "next/typescript"
