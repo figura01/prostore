@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const AdminOrdersPage = async (props: {
-  serachParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string }>;
 }) => {
-  const { page = "1" } = await props.serachParams;
+  const { page = "1" } = await props.searchParams;
   await requireAdmin();
 
   const session = auth();
