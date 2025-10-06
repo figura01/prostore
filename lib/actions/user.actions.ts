@@ -11,6 +11,7 @@ import { signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hash } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
+import { Prisma } from "@prisma/client";
 import { formatError } from "@/lib//utils";
 import { ShippingAddress } from "@/types";
 import { auth } from "@/auth";
@@ -182,11 +183,26 @@ export async function updateProfile(user: { name: string; email: string }) {
 export async function getAllUsers({
   limit = PAGE_SIZE,
   page,
+  query,
 }: {
   limit?: number;
   page: number;
+  query: string;
 }) {
+  const queryFilter: Prisma.UserWhereInput =
+    query && query !== "all"
+      ? {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          } as Prisma.StringFilter,
+        }
+      : {};
+
   const data = await prisma.user.findMany({
+    where: {
+      ...queryFilter,
+    },
     orderBy: {
       createdAt: "desc",
     },

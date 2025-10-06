@@ -1,27 +1,41 @@
 import ProductList from "@/components/shared/products/product-list";
-import { getLatestProducts } from "@/lib/actions/product.actions";
-import { convertToPlainObject } from "@/lib/utils";
+import {
+  getLatestProducts,
+  getFeaturedProducts,
+} from "@/lib/actions/product.actions";
+
+import ProductCarousel from "@/components/shared/products/product-carousel";
+import ViewAllProductsButton from "@/components/view-all-products-button";
 
 const HomePage = async () => {
   // Fetch latest products
   const latestProducts = await getLatestProducts();
+  const featuredProducts = await getFeaturedProducts();
 
   // Convert rating from string to number
-  const productsWithNumericRating = latestProducts.map(product => ({
+  const productsWithNumericRating = latestProducts.map((product) => ({
     ...product,
     rating: Number(product.rating),
   }));
 
   return (
     <>
-      <ProductList 
-        data={productsWithNumericRating} 
+      {featuredProducts.length > 0 && (
+        <ProductCarousel
+          data={featuredProducts.map((product) => ({
+            ...product,
+            rating: Number(product.rating),
+          }))}
+        />
+      )}
+      <ProductList
+        data={productsWithNumericRating}
         title="Newest Arrivals"
         limit={6}
       />
+      <ViewAllProductsButton />
     </>
   );
 };
 
 export default HomePage;
-
