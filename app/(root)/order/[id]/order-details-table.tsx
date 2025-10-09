@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import { useTransition } from "react";
 
 import { formatCurrency } from "@/lib/utils";
-import StripePayment from "./stripe-payment";
+import StripePayment from "@/app/(root)/order/[id]/stripe-payment";
 
 const OrderDetailsTable = ({
   order,
