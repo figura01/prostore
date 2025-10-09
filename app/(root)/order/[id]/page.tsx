@@ -3,7 +3,7 @@ import { getOrderById } from "@/lib/actions/order.actions";
 import { notFound } from "next/navigation";
 import { ShippingAddress } from "@/types";
 
-import OrderDetailsTable from "./order-details-table";
+import OrderDetailsTable from "@/app/(root)/order/[id]/order-details-table";
 import { auth } from "@/auth";
 
 import Stripe from "stripe";
