@@ -260,6 +260,7 @@ const OrderDetailsTable = ({
               )}
 
               {/* STRIPE PAYMENT */}
+              {paymentMethod}
               {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
                 <StripePayment
                   priceInCents={Number(order.totalPrice) * 100}
