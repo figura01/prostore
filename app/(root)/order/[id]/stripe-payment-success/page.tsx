@@ -37,7 +37,7 @@ const SuccessPage = async (props: {
     <div className="max-w-4xl w-full mx-auto space-y-8">
       <div className="flex flex-col gap-6 items-center">
         <h1 className="h1-bold">Thanks for your purchase</h1>
-        <div className="">We are processing tyour order.</div>
+        <div className="">We are processing your order.</div>
         <Button asChild>
           <Link href={`/order/${id}`}>View Order</Link>
         </Button>
